@@ -1,0 +1,39 @@
+CREATE TABLE protection_system
+(
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  encryption_mode TEXT NOT NULL
+);
+
+CREATE TABLE devices
+(
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  protection_system INTEGER NOT NULL
+);
+
+CREATE TABLE contents
+(
+  id INTEGER NOT NULL PRIMARY KEY,
+  protection_system INTEGER,
+  encryption_key TEXT,
+  encrypted_payload BYTEA
+);
+
+INSERT INTO protection_system (id, name, encryption_mode)
+VALUES
+  (1, 'AES 1', 'AES + ECB'),
+  (2, 'AES 2', 'AES + CBC');
+
+INSERT INTO devices (id, name, protection_system)
+VALUES
+  (1, 'Android', 1),
+  (2, 'Samsung', 2),
+  (3, 'iOS', 1),
+  (4, 'LG', 2);
+
+INSERT INTO contents (id, protection_system, encryption_key, encrypted_payload)
+VALUES
+  (1, 1, '_sample_content_', '863A619EAAF3B538665B1BE9423C1416'),
+  (2, 2, '_sample_content_', '7D795943EA1C01C96CF5BAD67D019CA0'),
+  (3, 1, NULL, NULL);

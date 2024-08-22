@@ -1,0 +1,26 @@
+# Starts PostgreSQL database and API for development
+version: "1"
+services:
+  postgresql:
+    container_name: postgres
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "--dbname=content", "--username=postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  service:
+    container_name: service
+    build: service
+    ports:
+      - "5001:5001"
+    environment:
+      POSTGRESQL_HOST: "postgres"
+    links:
+      - postgresql
+    restart: unless-stopped
